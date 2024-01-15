@@ -4,6 +4,7 @@ const express = require("express");
 const { connectDB } = require("./src/configs/db");
 const { authRoutes } = require("./src/routes/auth-route");
 const { postRoutes } = require("./src/routes/post-route");
+const { logger } = require("./src/middleware/logger");
 const app = express();
 // Load environment variables from .env file
 
@@ -11,6 +12,9 @@ const PORT = process.env.PORT || 3000;
 
 //middleware for json
 app.use(express.json());
+
+//logger
+app.use(logger);
 
 // authRoutes
 app.use("/auth", authRoutes);
