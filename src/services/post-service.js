@@ -1,3 +1,5 @@
+const getUserByUsernameService = require("./user-service");
+const { serilizerUserResponse } = require("../utils/serilizer");
 const { mongoose } = require("mongoose");
 const { Post } = require("../models/post-model");
 
@@ -7,7 +9,7 @@ const createPostService = async (newPost) => {
 };
 
 const getPostListbyAuthorService = async (authorName) => {
-  const author = await getUserByUsername(authorName);
+  const author = await getUserByUsernameService(authorName);
   const post = await Post.find({
     author: author._id,
   })

@@ -5,36 +5,24 @@ const {
   getPostListbyAuthorService,
 } = require("../services/post-service");
 const { Topic } = require("../models/topic-model");
-
-// const createPost = async (req, res) => {
-//   try {
-//     const { title, content, topic } = req.body;
-//     let author = await getUserByUsername(req.user.username);
-//     let newPost = {
-//       author: author._id,
-//       title,
-//       content,
-//       topic,
-//       createDate: new Date(),
-//     };
-
-//     console.log(newPost);
-
-//     await createPostService(newPost);
-//     await addPostToUser(req.user.username);
-//     res.status(200).json("created post");
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "There was an error creating the post" });
-//   }
-// };
+const { getTopicByName, isTopicExist } = require("../services/topic-service");
+const { getUserByUsernameService } = require("../services/user-service");
 
 const createPost = async (req, res) => {
   try {
-    const topic = new Topic(req.topic);
-    const { title, content } = req.body;
+    let topic;
+    if (await isTopicExist(req.body.topic)) {
+      console.log("topic exist");
+      topic = await getTopicByName(req.body.topic);
+    } else {
+      console.log("topic ");
+      await Topic.create({ topicName: req.body.topic });
+      topic = await getTopicByName(req.body.topic);
+    }
 
-    let author = await req.user.username;
+    const { title, content } = req.body;
+    let author = await getUserByUsernameService(req.user.username);
+
     let newPost = {
       author: author._id,
       title,
@@ -42,6 +30,7 @@ const createPost = async (req, res) => {
       topic,
       createDate: new Date(),
     };
+
     console.log(newPost);
 
     await createPostService(newPost);
@@ -58,7 +47,7 @@ const getPost = async (req, res) => {
 };
 
 const getPostByAuthor = async (req, res) => {
-  addPostToUser(req.user.username);
+  // addPostToUser(req.user.username);
   const author = req.params.user;
   const posts = await getPostListbyAuthorService(author);
   res.json(posts).status(200);

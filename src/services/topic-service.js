@@ -8,8 +8,14 @@ const createTopicService = async (newTopic) => {
 
 const isTopicExist = async (topicName) => {
   const filter = { topicName: topicName };
-  const topicList = Topic.find(filter);
+  const topicList = await Topic.find(filter);
   return topicList.length > 0;
 };
 
-module.exports = { createTopicService, isTopicExist };
+const getTopicByName = async (topicName) => {
+  const filter = { topicName: topicName };
+  const topic = Topic.findOne(filter);
+  return topic;
+};
+
+module.exports = { getTopicByName, isTopicExist };

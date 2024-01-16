@@ -1,12 +1,10 @@
-const { serilizerUserResponse } = require("../utils/serilizer");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { AppError } = require("../errors/AppError");
-const { User } = require("../models/user-model");
 const {
   createUserService,
-  getUserByUsername,
-  getUserForAuth,
+  getUserByUsernameService,
+  getUserForAuthService,
 } = require("../services/user-service");
 
 const HASH_ROUND = process.env.HASH_ROUND;
@@ -16,7 +14,7 @@ const createUser = async (req, res, next) => {
     const { username, password, email, profileImage = "" } = req.body;
 
     //check isExist
-    const user = await getUserByUsername(username);
+    const user = await getUserByUsernameService(username);
     // res.json(req.body);
     if (user) {
       res.json("User already exists!").status(400);
@@ -48,7 +46,7 @@ const logIn = async (req, res, next) => {
       throw new AppError("Missing input!", 400);
     }
 
-    const user = await getUserForAuth(username);
+    const user = await getUserForAuthService(username);
     if (!user) {
       throw new AppError("User not found!", 404);
     }
