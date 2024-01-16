@@ -4,23 +4,46 @@ const {
   createPostService,
   getPostListbyAuthorService,
 } = require("../services/post-service");
-const { getUserByUsername } = require("../services/user-service");
-const { getUsernameFromJWT } = require("../utils/getUsernameFromJWT");
+const { Topic } = require("../models/topic-model");
+
+// const createPost = async (req, res) => {
+//   try {
+//     const { title, content, topic } = req.body;
+//     let author = await getUserByUsername(req.user.username);
+//     let newPost = {
+//       author: author._id,
+//       title,
+//       content,
+//       topic,
+//       createDate: new Date(),
+//     };
+
+//     console.log(newPost);
+
+//     await createPostService(newPost);
+//     await addPostToUser(req.user.username);
+//     res.status(200).json("created post");
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "There was an error creating the post" });
+//   }
+// };
 
 const createPost = async (req, res) => {
   try {
-    const { title, content, topic } = req.body;
-    let author = await getUserByUsername(req.user.username);
+    const topic = new Topic(req.topic);
+    const { title, content } = req.body;
 
+    let author = await req.user.username;
     let newPost = {
-      author,
+      author: author._id,
       title,
       content,
       topic,
       createDate: new Date(),
     };
-
     console.log(newPost);
+
     await createPostService(newPost);
     res.status(200).json("created post");
   } catch (error) {
@@ -35,7 +58,8 @@ const getPost = async (req, res) => {
 };
 
 const getPostByAuthor = async (req, res) => {
-  const author = await getUserByUsername(req.params.user);
+  addPostToUser(req.user.username);
+  const author = req.params.user;
   const posts = await getPostListbyAuthorService(author);
   res.json(posts).status(200);
 };
@@ -50,6 +74,5 @@ const getPostByAuthor = async (req, res) => {
 module.exports = {
   createPost,
   getPostByAuthor,
-  // getCommentByPost,
   getPost,
 };

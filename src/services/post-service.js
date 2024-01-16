@@ -1,19 +1,30 @@
 const { mongoose } = require("mongoose");
 const { Post } = require("../models/post-model");
-const { getUserByUsername } = require("./user-service");
-const ObjectID = mongoose.Types.ObjectId;
 
 const createPostService = async (newPost) => {
   await Post.create(newPost);
   return "OK";
 };
 
-const getPostListbyAuthorService = async (author) => {
-  return await Post.aggregate({
-    $match: { author: ObjectID(author._id) },
+const getPostListbyAuthorService = async (authorName) => {
+  const author = await getUserByUsername(authorName);
+  const post = await Post.find({
+    author: author._id,
   })
-    .populate("author")
-    .exec();
+    .select("_id title content topic createDate -author")
+    .populate("author");
+
+  return post;
+};
+
+const getPostListByTopicService = async (topic) => {
+  let post = await Post.find({
+    topic: topic,
+  })
+    .select("_id title content topic createDate")
+    .populate("author");
+  post.author = serilizerUserResponse(post.author);
+  return post;
 };
 
 module.exports = {

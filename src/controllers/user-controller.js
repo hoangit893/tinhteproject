@@ -6,7 +6,7 @@ const { User } = require("../models/user-model");
 const {
   createUserService,
   getUserByUsername,
-  getPasswordByUsername,
+  getUserForAuth,
 } = require("../services/user-service");
 
 const HASH_ROUND = process.env.HASH_ROUND;
@@ -35,6 +35,7 @@ const createUser = async (req, res, next) => {
       });
     }
   } catch (AppError) {
+    res.json({ message: AppError.message }).status(AppError.statusCode);
     console.log(AppError);
   }
 };
@@ -47,7 +48,7 @@ const logIn = async (req, res, next) => {
       throw new AppError("Missing input!", 400);
     }
 
-    const user = await getUserByUsername(username);
+    const user = await getUserForAuth(username);
     if (!user) {
       throw new AppError("User not found!", 404);
     }
@@ -65,10 +66,18 @@ const logIn = async (req, res, next) => {
     }
 
     const token = jwt.sign({ username }, process.env.ACCESS_TOKEN_SECRET);
-    res.json({ token }).status(200);
+    res.json({ Message: "Login successfully !", token }).status(200);
   } catch (err) {
     console.log(err);
   }
 };
 
-module.exports = { createUser, logIn };
+const addPostToUser = async (username) => {
+  user = await getUserByUsername(username);
+  let postList = await getPostByAuthor(username);
+  postList = postList.map((post) => post._id);
+  user.posts = postList;
+  return await user.save();
+};
+
+module.exports = { createUser, logIn, addPostToUser };

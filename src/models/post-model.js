@@ -18,9 +18,8 @@ const postSchema = new Schema({
     minlength: 3,
   },
   topic: {
-    type: String,
-    required: true,
-    minlength: 3,
+    type: Schema.Types.ObjectId,
+    ref: "Topic",
   },
   view: {
     type: Number,
