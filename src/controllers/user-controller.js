@@ -6,6 +6,7 @@ const {
   getUserByUsernameService,
   getUserForAuthService,
 } = require("../services/user-service");
+const { getPostListByTopicService } = require("../services/post-service");
 
 const HASH_ROUND = process.env.HASH_ROUND;
 // create user
@@ -78,4 +79,9 @@ const addPostToUser = async (username) => {
   return await user.save();
 };
 
-module.exports = { createUser, logIn, addPostToUser };
+const getPostListByTopic = async (req, res) => {
+  const postList = await getPostListByTopicService(req.params.topic);
+  return postList;
+}
+
+module.exports = { createUser, logIn, addPostToUser, getPostListByTopic };

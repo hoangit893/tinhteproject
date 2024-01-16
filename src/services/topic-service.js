@@ -18,4 +18,8 @@ const getTopicByName = async (topicName) => {
   return topic;
 };
 
-module.exports = { getTopicByName, isTopicExist };
+const getTopicListService = async () => {
+  const topicList = await Topic.find();
+  return topicList;
+}
+module.exports = { getTopicByName, isTopicExist, getTopicListService };

@@ -6,7 +6,6 @@ const serilizerUserResponse = (user) => {
       newUser[key] = user[key];
     }
   }
-  console.log(newUser);
   return newUser;
 };
 

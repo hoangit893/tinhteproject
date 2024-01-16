@@ -12,10 +12,8 @@ const createPost = async (req, res) => {
   try {
     let topic;
     if (await isTopicExist(req.body.topic)) {
-      console.log("topic exist");
       topic = await getTopicByName(req.body.topic);
     } else {
-      console.log("topic ");
       await Topic.create({ topicName: req.body.topic });
       topic = await getTopicByName(req.body.topic);
     }

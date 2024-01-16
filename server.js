@@ -6,6 +6,7 @@ const { authRoutes } = require("./src/routes/auth-route");
 const { postRoutes } = require("./src/routes/post-route");
 const { userRoutes } = require("./src/routes/user-route");
 const logger = require("./src/middlewares/logger");
+const { topicRoutes } = require("./src/routes/topic-route");
 const app = express();
 // Load environment variables from .env file
 
@@ -25,6 +26,9 @@ app.use("/post", postRoutes);
 
 //userRoutes
 app.use("/user", userRoutes);
+
+//topicRoutes
+app.use("/topic", topicRoutes)
 
 connectDB()
   .then((res) => {

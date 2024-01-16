@@ -1,5 +1,6 @@
 const e = require("express");
 const authenticateToken = require("../middlewares/authenticateToken.js");
+const { getPostListByTopic } = require("../controllers/post-controller.js")
 const postRoutes = require("express").Router();
 const {
   createPost,
@@ -13,7 +14,7 @@ postRoutes.post("/create", authenticateToken, (req, res) =>
   createPost(req, res)
 );
 
-postRoutes.get("/:user", (req, res) => getPostByAuthor(req, res));
+postRoutes.get("/:topic", (req, res) => getPostListByTopic(req, res));
 
 postRoutes.get("/", (req, res) => getAllPost(req, res));
 

@@ -32,4 +32,5 @@ const getPostListByTopicService = async (topic) => {
 module.exports = {
   createPostService,
   getPostListbyAuthorService,
+  getPostListByTopicService
 };
