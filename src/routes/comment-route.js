@@ -7,6 +7,6 @@ const authenticateToken = require('../middlewares/authenticateToken');
 
 commentRouters.post('/create', authenticateToken, (req, res) => createComment(req, res));
 
-commentRouters.get('/:postId', authenticateToken, (req, res) => getCommentListByPost(req, res));
+commentRouters.get('/:postId', (req, res) => getCommentListByPost(req, res));
 
 module.exports = { commentRouters };

@@ -7,7 +7,12 @@ const { serilizerUserResponse } = require("../utils/serilizer");
 const userRoutes = require("express").Router();
 
 userRoutes.get("/:username", async (req, res) => {
-  res.json(await getUserByUsername(req.params.username)).status(200);
+  try {
+    res.json(await getUserByUsername(req.params.username)).status(200);
+  } catch {
+    res.json("error").status(500);
+  }
+
 });
 
 userRoutes.get("/:username/post", (req, res) => getPostByAuthor(req, res));

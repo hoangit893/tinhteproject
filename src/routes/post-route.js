@@ -3,11 +3,11 @@ const { getPostListByTopic } = require("../controllers/post-controller.js")
 const postRoutes = require("express").Router();
 const {
   createPost,
-  getPostByAuthor,
-  getPost,
+  getPostListByTopic,
+  getAllPost
 } = require("../controllers/post-controller.js");
 
-postRoutes.get("/", (req, res) => getPost(req, res));
+// postRoutes.get("/", (req, res) => getPost(req, res));
 
 postRoutes.post("/create", authenticateToken, (req, res) =>
   createPost(req, res)
