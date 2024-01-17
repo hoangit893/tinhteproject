@@ -34,7 +34,8 @@ const createPost = async (req, res) => {
 
     await createPostService(newPost);
     res.status(200).json("created post");
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
     res.status(500).json({ error: "There was an error creating the post" });
   }
