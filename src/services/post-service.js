@@ -2,10 +2,17 @@ const getUserByUsernameService = require("./user-service");
 const { serilizerUserResponse } = require("../utils/serilizer");
 const { mongoose } = require("mongoose");
 const { Post } = require("../models/post-model");
+const { User } = require("../models/user-model");
 
 const createPostService = async (newPost) => {
   await Post.create(newPost);
   return "OK";
+};
+
+
+const getPostListService = async () => {
+  let postList = await Post.find();
+  return postList;
 };
 
 const getPostListbyAuthorService = async (authorName) => {
@@ -13,7 +20,7 @@ const getPostListbyAuthorService = async (authorName) => {
   const post = await Post.find({
     author: author._id,
   })
-    .select("_id title content topic createDate -author")
+    .select("_id title content topic createDate author")
     .populate("author");
 
   return post;
@@ -31,6 +38,7 @@ const getPostListByTopicService = async (topic) => {
 
 module.exports = {
   createPostService,
+  getPostListService,
   getPostListbyAuthorService,
   getPostListByTopicService
 };

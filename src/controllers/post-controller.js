@@ -3,6 +3,7 @@ const { Comment } = require("../models/comment-model");
 const {
   createPostService,
   getPostListbyAuthorService,
+  getPostListService
 } = require("../services/post-service");
 const { Topic } = require("../models/topic-model");
 const { getTopicByName, isTopicExist } = require("../services/topic-service");
@@ -22,7 +23,7 @@ const createPost = async (req, res) => {
     let author = await getUserByUsernameService(req.user.username);
 
     let newPost = {
-      author: author._id,
+      author: author,
       title,
       content,
       topic,
@@ -39,9 +40,14 @@ const createPost = async (req, res) => {
   }
 };
 
-const getPost = async (req, res) => {
-  const posts = await Post.find().populate("comments");
-  res.json(posts).status(200);
+const getPost = (req, res) => {
+  getPostListService()
+    .then((postList) => {
+      res.json(postList).status(200);
+    })
+    .catch((err) => {
+      res.json(err).status(500);
+    });
 };
 
 const getPostByAuthor = async (req, res) => {

@@ -1,9 +1,9 @@
-const { getTopicList } = require("../services/topic-service");
+const { getTopicList } = require("../controllers/topic-controller");
 
 const topicRoutes = require("express").Router();
 
 
-topicRoutes.get("/", getTopicList());
+topicRoutes.get("/", (req, res) => getTopicList(req, res));
 
 
 module.exports = { topicRoutes };

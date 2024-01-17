@@ -2,10 +2,14 @@ const { getTopicListService } = require("../services/topic-service")
 
 
 
-const getTopicList = async (res, req) => {
-    req.json(await getTopicListService());
+const getTopicList = (req, res) => {
+    getTopicListService()
+        .then((topicList) => {
+            res.json(topicList).status(200)
+        })
+        .catch((err) => {
+            res.json(err).status(500)
+        })
 }
 
-modules.export = {
-    getTopicList
-}
+module.exports = { getTopicList }

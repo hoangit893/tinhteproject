@@ -4,9 +4,11 @@ const { AppError } = require("../errors/AppError");
 const {
   createUserService,
   getUserByUsernameService,
+  getUserByIdService,
   getUserForAuthService,
 } = require("../services/user-service");
 const { getPostListByTopicService } = require("../services/post-service");
+const { serilizerUserResponse } = require("../utils/serilizer");
 
 const HASH_ROUND = process.env.HASH_ROUND;
 // create user
@@ -84,4 +86,9 @@ const getPostListByTopic = async (req, res) => {
   return postList;
 }
 
-module.exports = { createUser, logIn, addPostToUser, getPostListByTopic };
+const getUserById = async (req, res) => {
+  const user = await getUserByIdService(req.params.id);
+  res.json(serilizerUserResponse(user)).status(200);
+};
+
+module.exports = { createUser, logIn, addPostToUser, getPostListByTopic, getUserById };

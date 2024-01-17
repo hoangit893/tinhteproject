@@ -30,9 +30,14 @@ const getUserForAuthService = async (username) => {
   return await User.findOne(filter);
 };
 
+const getUserByIdService = async (id) => {
+  return await User.findById(id);
+}
+
 module.exports = {
   createUserService,
   getUserByUsernameService,
   getUserForAuthService,
+  getUserByIdService
   // addPostToUserService,
 };
