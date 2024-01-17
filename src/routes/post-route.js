@@ -1,4 +1,3 @@
-const e = require("express");
 const authenticateToken = require("../middlewares/authenticateToken.js");
 const { getPostListByTopic } = require("../controllers/post-controller.js")
 const postRoutes = require("express").Router();

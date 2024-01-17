@@ -22,7 +22,7 @@ const createUserService = async ({
 const getUserByUsernameService = async (username) => {
   const filter = { username: username };
   const user = await User.findOne(filter);
-  return serilizerUserResponse(user);
+  return user;
 };
 
 const getUserForAuthService = async (username) => {

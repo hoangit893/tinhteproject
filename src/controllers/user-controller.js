@@ -7,7 +7,7 @@ const {
   getUserByIdService,
   getUserForAuthService,
 } = require("../services/user-service");
-const { getPostListByTopicService } = require("../services/post-service");
+const { getPostListByTopicService, getPostListbyAuthorService } = require("../services/post-service");
 const { serilizerUserResponse } = require("../utils/serilizer");
 
 const HASH_ROUND = process.env.HASH_ROUND;
@@ -29,6 +29,7 @@ const createUser = async (req, res, next) => {
         password: hashPassword,
         email,
         profileImage,
+        posts: [],
       };
       await createUserService(newUser).then((message) => {
         const token = jwt.sign({ username }, process.env.ACCESS_TOKEN_SECRET);
@@ -74,8 +75,8 @@ const logIn = async (req, res, next) => {
 };
 
 const addPostToUser = async (username) => {
-  user = await getUserByUsername(username);
-  let postList = await getPostByAuthor(username);
+  user = await getUserByUsernameService(username);
+  let postList = await getPostListbyAuthorService(username);
   postList = postList.map((post) => post._id);
   user.posts = postList;
   return await user.save();
