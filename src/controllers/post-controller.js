@@ -67,8 +67,11 @@ const getPostByAuthor = async (req, res) => {
 //   res.json(comments).status(200);
 // };
 
+// const getPostListByTopic = async
+
 module.exports = {
   createPost,
+  // getPostListByTopic,
   getPostByAuthor,
   getPost,
 };
