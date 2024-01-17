@@ -1,7 +1,6 @@
 const { Schema, default: mongoose } = require("mongoose");
 
 const comment = new Schema({
-  _id: Schema.Types.ObjectId,
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -12,6 +11,14 @@ const comment = new Schema({
     minlength: 3,
   },
   createDate: Date,
+  post: {
+    type: Schema.Types.ObjectId,
+    ref: "Post",
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 const Comment = mongoose.model("Comment", comment);

@@ -5,6 +5,7 @@ const {
   getPostListbyAuthorService,
   getPostListService
 } = require("../services/post-service");
+const { addPostToUser } = require("./user-controller");
 const { Topic } = require("../models/topic-model");
 const { getTopicByName, isTopicExist } = require("../services/topic-service");
 const { getUserByUsernameService } = require("../services/user-service");
@@ -33,6 +34,7 @@ const createPost = async (req, res) => {
     console.log(newPost);
 
     await createPostService(newPost);
+    await addPostToUser(req.user.username);
     res.status(200).json("created post");
   }
   catch (error) {
